@@ -5,7 +5,7 @@ STATES = {"draft": [("readonly", False)]}
 
 class AccountWithholding(models.Model):
     _name = "l10n_ec.withhold"
-    _inherit = ['mail.thread', 'mail.activity.mixin', 'journal_withhold']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     
     issue_date = fields.Date(string="Fecha de retencion", readonly=True, states=STATES, required=True, tracking=True)
 
