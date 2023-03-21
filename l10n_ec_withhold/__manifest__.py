@@ -12,6 +12,7 @@
         "python": ["cryptography==36.0.0", "xmlsig==0.1.9", "xades==0.2.4", "zeep"]
     },
     "data": [
+        "security/ir.model.access.csv",
         "views/account_move_view.xml",
         "views/account_tax_view.xml",
         "views/res_config_view.xml",
