@@ -14,6 +14,7 @@
     "data": [
         "views/account_move_view.xml",
         "views/account_tax_view.xml",
+        "views/res_config_view.xml",
         "wizard/account_withholding.xml"
     ],
     "installable": True,
