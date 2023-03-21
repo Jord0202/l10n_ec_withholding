@@ -171,7 +171,7 @@ class AccountWithholding(models.Model):
         for ret in self:
             inv = ret.invoice_id
             move_data = {
-                'journal_id': ret.type_document,
+                'journal_id': ret.company_id.l10n_ec_withhold_journal_id.id,
                 'ref': "RET" + ret.document_number,
                 'date': ret.issue_date
             }
