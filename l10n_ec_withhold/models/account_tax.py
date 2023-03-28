@@ -21,8 +21,22 @@ TYPE_TAX_USE = [
 class AccountTaxTemplate(models.Model):
     _inherit = "account.tax.template"
 
-    type_tax_use = fields.Selection(TYPE_TAX_USE, string='Tipo de Impuesto', required=True, default="sale",
-        help="Determina dónde se puede seleccionar el impuesto. Nota: 'Ninguno' significa que un impuesto no se puede usar solo, sin embargo, aún se puede usar en un grupo. 'Ajuste' se utiliza para realizar el ajuste de impuestos.")
+    def create_or_update_account_taxes(self):
+        """This method creates or updates account taxes based on the tax templates"""
+        for tax_template in self:
+            tax_vals = tax_template._get_tax_vals(self.env.company, {})
+            tax = self.env['account.tax'].search([('id', '=', tax_template.tax_id.id)])
+            if not tax:
+                tax = self.env['account.tax'].create(tax_vals)
+            else:
+                tax.write(tax_vals)
+                tax.name = tax_template.name
+
+    def post_init_hook(self):
+        self.create_or_update_account_taxes()
+    
+    type_tax_use = fields.Selection(TYPE_TAX_USE, string='Tax Type', required=True, default="sale",
+        help="Determina dónde se puede seleccionar el impuesto. Nota: 'Ninguno' significa que un impuesto no se puede usar solo, sin embargo, aún se puede usar en un grupo. 'Ajuste' se utiliza para realizar el ajuste de impuestos.")    
 
 class AccountTax(models.Model):
     _inherit = "account.tax"

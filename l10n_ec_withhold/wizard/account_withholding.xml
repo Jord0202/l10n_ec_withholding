@@ -91,7 +91,7 @@
                                     context="{'default_invoice_id': invoice_id, 'default_currency_id': currency_id}"
                                 >
                                     <tree editable="bottom">
-                                        <field name="tax_withhold_ids" width='50%' domain="[('type_tax_use','in',['VAT Withhold', 'Profit Withhold', ])]"/>
+                                        <field name="tax_withhold_ids" width='50%' domain="[('tax_group_id','in',['VAT Withhold on Sales', 'Profit Withhold on Sales', ])]"/>
                                         <field name="base_amount" width='25%'/>
                                         <field name="withhold_amount" width='25%' />
                                     </tree>
