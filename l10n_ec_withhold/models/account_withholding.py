@@ -1,6 +1,7 @@
 
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 STATES = {"draft": [("readonly", False)]}
 
 class AccountWithholding(models.Model):
@@ -22,8 +23,6 @@ class AccountWithholding(models.Model):
         tracking=True,
     )
     type_document = fields.Integer(default="7")
-
-
 
     partner_id = fields.Many2one(
         "res.partner",
@@ -171,7 +170,7 @@ class AccountWithholding(models.Model):
         for ret in self:
             inv = ret.invoice_id
             move_data = {
-                'journal_id': ret.company_id.l10n_ec_withhold_journal_id.id,
+                'journal_id': "7",
                 'ref': "RET" + ret.document_number,
                 'date': ret.issue_date
             }

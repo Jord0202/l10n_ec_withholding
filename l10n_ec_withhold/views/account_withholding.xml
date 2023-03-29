@@ -22,7 +22,7 @@
             <field name="name">Sales Withholds</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">l10n_ec.withhold</field>
-            <field name="view_mode">tree,kanban,form,pivot</field>
+            <field name="view_mode">tree,kanban,form</field>
             <field name="context">{"withhold_type": 'sale'}</field>
             <field name="domain">[('type', '=', 'sale')]</field>
             <field name="view_id" ref="l10n_ec_withhold_tree_view" />
@@ -34,6 +34,7 @@
         <record id="l10n_ec_withhold_form_view" model="ir.ui.view">
             <field name="name">l10n_ec.withhold.form</field>
             <field name="model">l10n_ec.withhold</field>
+            <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Withhold">
                     <header>

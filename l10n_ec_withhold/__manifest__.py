@@ -12,7 +12,7 @@
         "python": ["cryptography==36.0.0", "xmlsig==0.1.9", "xades==0.2.4", "zeep"]
     },
     "data": [
-        "security/ir.model.access.csv",
+        #"security/ir.model.access.csv",
         #"data/account_chart_template_data.xml",
         "data/account_tax_group_data.xml",
         #"data/account_tax_report_data.xml",
@@ -20,8 +20,8 @@
         #"data/account_tax_template_withhold_vat_data.xml",
         "views/account_move_view.xml",
         "views/account_tax_view.xml",
-        "views/res_config_view.xml",
-        "wizard/account_withholding.xml"
+        "views/account_withholding.xml",
+        "views/wizard_withhold.xml"
     ],
     "installable": True,
     "auto_install": False,
