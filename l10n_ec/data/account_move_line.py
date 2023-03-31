@@ -1,44 +1,27 @@
-import logging
-import re
-from xml.etree.ElementTree import SubElement
+from odoo import models, fields, api
+from odoo.exceptions import UserError
 
-from odoo import _, api, fields, models, tools
-from odoo.exceptions import UserError, ValidationError
-from odoo.tools import safe_eval
-
-_logger = logging.getLogger(__name__)
-
-_STATES = [
-            ("draft", "Draft"),
-            ("done", "Done"),
-            ("cancelled", "Cancelled"),
-        ],
-
-
-
-#linea de impuestos tablita:3
-class L10nEcWithholdLine(models.Model):
-    _name = "l10n_ec.withhold.line"
-    _description = "Ecuadorian Withhold"
+class WizarWithholdLine(models.TransientModel):
+    _inherit = "account.move"
 
     tax_withhold_ids = fields.Many2one(
         comodel_name = 'account.tax', 
-        string= 'Impuesto de retencion'
+        string= 'Impuesto de retencion',
+        store=False,
     )
 
     base_amount = fields.Float( 
         string= "Monto base",
-        store= True,
+        store=False,
         compute= "_compute_valor_base"
     )
     
     withhold_amount = fields.Float( 
         string= "Monto retenido",
-        store= True,
+        store=False,
         compute= "_compute_valor_withhold"
     )
     
-
     account_tax_withhold = fields.Integer(
         compute = "_compute_get_account",
         store=False
@@ -48,13 +31,11 @@ class L10nEcWithholdLine(models.Model):
         store=False
     )
 
-    document_related = fields.Char( default='withhold_id.invoice_id')
-
     withhold_id = fields.Many2one(
-        comodel_name="l10n_ec.withhold",
+        comodel_name="l10n_ec.wizard.create.sale.withhold",
         string="Withhold",
         required=True,
-        store=True,
+        store=False,
         ondelete="cascade",
         readonly=True,
     )
@@ -63,10 +44,10 @@ class L10nEcWithholdLine(models.Model):
     @api.depends('withhold_id', 'tax_withhold_ids', 'base_amount')
     def _compute_valor_base(self):
         for base in self:
-            if base.tax_withhold_ids.type_tax_use == "Profit Withhold":
+            if base.tax_withhold_ids.tax_group_id.name == "Profit Withhold on Sales":
                 base.base_amount = base.withhold_id.invoice_id.amount_untaxed
                 base.base_amount = round(base.base_amount,2)
-            elif base.tax_withhold_ids.type_tax_use == "VAT Withhold":
+            elif base.tax_withhold_ids.tax_group_id.name == "VAT Withhold on Sales":
                 base.base_amount = base.withhold_id.invoice_id.amount_untaxed * 0.12
                 base.base_amount = round(base.base_amount,2)
             else:
@@ -95,15 +76,3 @@ class L10nEcWithholdLine(models.Model):
         for tax in self:
             tax_id = tax.tax_withhold_ids.id
             tax.account_tax_tag_withhold = (4, tax_id)
-
-                
-
-
-
-
-
-
-
-
-    
-

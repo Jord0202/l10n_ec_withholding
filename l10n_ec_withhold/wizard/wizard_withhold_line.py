@@ -43,12 +43,10 @@ class WizarWithholdLine(models.TransientModel):
     @api.depends('withhold_id', 'tax_withhold_ids', 'base_amount')
     def _compute_valor_base(self):
         for base in self:
-            if base.tax_withhold_ids.tax_group_id.name == "Profit Withhold on Sales":
-                base.base_amount = base.withhold_id.invoice_id.amount_untaxed
-                base.base_amount = round(base.base_amount,2)
-            elif base.tax_withhold_ids.tax_group_id.name == "VAT Withhold on Sales":
-                base.base_amount = base.withhold_id.invoice_id.amount_untaxed * 0.12
-                base.base_amount = round(base.base_amount,2)
+            if base.tax_withhold_ids.tax_group_id.name in ['VAT Withhold on Sales', 'VAT Withhold on Purchases']:
+                base.base_amount = abs(base.withhold_id.invoice_id.amount_untaxed_signed)
+            elif base.tax_withhold_ids.tax_group_id.name in ['Profit Withhold on Sales', 'Profit Withhold on Purchases']:
+                base.base_amount = abs(base.withhold_id.invoice_id.amount_tax_signed)
             else:
                 0.00
 
