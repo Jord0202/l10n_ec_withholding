@@ -21,6 +21,8 @@ class AccountMove(models.Model):
         inverse_name="l10n_ec_withhold_id",
         string="Lineas de retencion",
         required=True,
+        readonly=True,
+        store=True,
     )
     l10n_ec_withhold_ids = fields.Many2many(
         'account.move',
@@ -28,10 +30,17 @@ class AccountMove(models.Model):
         column1='move_id',
         column2='withhold_id', 
         string='Withhold', 
+        store=True,
         readonly=True)
 
 
     l10n_ec_withhold_count = fields.Integer(string="Withholds Count", compute='_compute_l10n_ec_withhold_get')
+
+    l10n_ec_withhold_active = fields.Boolean(
+        string="Withholds Count", 
+        compute='_compute_l10n_ec_withhold_active',
+        store=True,
+        )
 
     def action_create_sale_withhold_wizard(self):
         self.ensure_one()
@@ -77,6 +86,12 @@ class AccountMove(models.Model):
             self.l10n_ec_withhold_ids = False
 
 
+    @api.depends('partner_id.l10n_ec_withhold_related')
+    def _compute_l10n_ec_withhold_active(self):
+        for move in self:
+            move.l10n_ec_withhold_active = move.partner_id.l10n_ec_withhold_related
+
+
 
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
@@ -84,6 +99,6 @@ class AccountMoveLine(models.Model):
     l10n_ec_withhold_id = fields.Many2one(
         comodel_name="account.move",
         string="Withhold",
-        readonly=False,
+        readonly=True,
         required=True,
     ) 

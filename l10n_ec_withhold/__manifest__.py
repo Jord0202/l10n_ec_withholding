@@ -19,10 +19,11 @@
         #"data/account_tax_report_data.xml",
         #"data/account_tax_template_withhold_profit_data.xml",
         #"data/account_tax_template_withhold_vat_data.xml",
+        "views/res_partner.xml",
         "views/account_move_view.xml",
         "views/account_tax_view.xml",
-        "views/wizard_withhold.xml"
-
+        "views/wizard_withhold.xml",
+        
     ],
     "installable": True,
     "auto_install": False,
