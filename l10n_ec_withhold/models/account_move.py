@@ -101,4 +101,5 @@ class AccountMoveLine(models.Model):
         string="Withhold",
         readonly=True,
         required=True,
+        store=True
     ) 
