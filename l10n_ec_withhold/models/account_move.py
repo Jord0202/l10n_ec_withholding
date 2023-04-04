@@ -100,6 +100,6 @@ class AccountMoveLine(models.Model):
         comodel_name="account.move",
         string="Withhold",
         readonly=True,
-        required=True,
+        required=False,
         store=True
     ) 

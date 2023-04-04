@@ -145,7 +145,7 @@ class WizarWithhold(models.TransientModel):
         """
         for ret in self:
             if not ret.withhold_line_ids:
-                raise UserError('No ha aplicado impuestos.')
+                raise UserError(_('No ha aplicado impuestos.'))
             #self.action_validate(self.document_number)
             if self.invoice_id.move_type == 'out_invoice':
                     self.create_move()

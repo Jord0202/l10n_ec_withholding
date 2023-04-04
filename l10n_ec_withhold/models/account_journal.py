@@ -1,4 +1,4 @@
-from odoo import _, api, fields, models
+from odoo import fields, models
 
 class AccountJournal(models.Model):
     _inherit = 'account.journal'
